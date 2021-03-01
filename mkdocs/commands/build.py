@@ -325,4 +325,4 @@ def build(config, live_server=False, dirty=False):
 def site_directory_contains_stale_files(site_directory):
     """ Check if the site directory contains stale files from a previous build. """
 
-    return True if os.path.exists(site_directory) and os.listdir(site_directory) else False
+    return bool(os.path.exists(site_directory) and os.listdir(site_directory))

@@ -63,12 +63,6 @@ class ConfigTests(unittest.TestCase):
         Users can explicitly set the config file using the '--config' option.
         Allows users to specify a config other than the default `mkdocs.yml`.
         """
-        expected_result = {
-            'site_name': 'Example',
-            'pages': [
-                {'Introduction': 'index.md'}
-            ],
-        }
         file_contents = dedent("""
         site_name: Example
         pages:
@@ -77,13 +71,16 @@ class ConfigTests(unittest.TestCase):
         with TemporaryDirectory() as temp_path:
             os.mkdir(os.path.join(temp_path, 'docs'))
             config_path = os.path.join(temp_path, 'mkdocs.yml')
-            config_file = open(config_path, 'w')
-
-            config_file.write(file_contents)
-            config_file.flush()
-            config_file.close()
-
+            with open(config_path, 'w') as config_file:
+                config_file.write(file_contents)
+                config_file.flush()
             result = config.load_config(config_file=config_file.name)
+            expected_result = {
+                'site_name': 'Example',
+                'pages': [
+                    {'Introduction': 'index.md'}
+                ],
+            }
             self.assertEqual(result['site_name'], expected_result['site_name'])
             self.assertEqual(result['pages'], expected_result['pages'])
 

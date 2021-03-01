@@ -165,10 +165,7 @@ class File:
         url = self.dest_path.replace(os.path.sep, '/')
         dirname, filename = os.path.split(url)
         if use_directory_urls and filename == 'index.html':
-            if dirname == '':
-                url = '.'
-            else:
-                url = dirname + '/'
+            url = '.' if dirname == '' else dirname + '/'
         return urlquote(url)
 
     def url_relative_to(self, other):

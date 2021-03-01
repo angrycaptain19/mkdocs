@@ -411,12 +411,12 @@ class PageTests(unittest.TestCase):
         self.assertTrue(pg != Page('Foo', f2, cfg))
 
     def test_BOM(self):
-        md_src = '# An UTF-8 encoded file with a BOM'
         with TemporaryDirectory() as docs_dir:
             # We don't use mkdocs.tests.base.tempdir decorator here due to uniqueness of this test.
             cfg = load_config(docs_dir=docs_dir)
             fl = File('index.md', cfg['docs_dir'], cfg['site_dir'], cfg['use_directory_urls'])
             pg = Page(None, fl, cfg)
+            md_src = '# An UTF-8 encoded file with a BOM'
             # Create an UTF-8 Encoded file with BOM (as Micorsoft editors do). See #1186
             with open(fl.abs_src_path, 'w', encoding='utf-8-sig') as f:
                 f.write(md_src)
@@ -693,9 +693,16 @@ class RelativePathExtensionTests(unittest.TestCase):
 
     def get_rendered_result(self, files):
         cfg = load_config(docs_dir=self.DOCS_DIR)
-        fs = []
-        for f in files:
-            fs.append(File(f.replace('/', os.sep), cfg['docs_dir'], cfg['site_dir'], cfg['use_directory_urls']))
+        fs = [
+            File(
+                f.replace('/', os.sep),
+                cfg['docs_dir'],
+                cfg['site_dir'],
+                cfg['use_directory_urls'],
+            )
+            for f in files
+        ]
+
         pg = Page('Foo', fs[0], cfg)
         pg.read_source(cfg)
         pg.render(cfg, Files(fs))

@@ -33,7 +33,7 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
         try:
             mock.assert_called_once()
         except AttributeError:
-            if not mock.call_count == 1:
+            if mock.call_count != 1:
                 msg = ("Expected '%s' to have been called once. Called %s times." %
                        (mock._mock_name or 'mock', self.call_count))
                 raise AssertionError(msg)

@@ -313,7 +313,7 @@ class RepoURL(URL):
 
         # derive edit_uri from repo_name if unset
         if config['repo_url'] is not None and edit_uri is None:
-            if repo_host == 'github.com' or repo_host == 'gitlab.com':
+            if repo_host in ['github.com', 'gitlab.com']:
                 edit_uri = 'edit/master/docs/'
             elif repo_host == 'bitbucket.org':
                 edit_uri = 'src/default/docs/'
